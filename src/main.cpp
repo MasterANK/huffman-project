@@ -28,8 +28,7 @@ class compare{
 class huffmanTree{
     public:
     node* tree_contruct(priority_queue<node*, vector<node*>, compare> &minheap){
-        while (minheap.size() > 1)
-        {
+        while (minheap.size() > 1) {
             node* a = minheap.top(); minheap.pop();
             node* b = minheap.top(); minheap.pop();
             int combined_freq = a->freq + b->freq;
@@ -73,6 +72,19 @@ class huffmanTree{
         }
         return decoded_message;
     }
+    void printtree(node* root, string output = "", bool isleft = false){
+        if(root != nullptr){
+            cout << output;
+            cout << (isleft? "├──" : "└──");
+            if(root->ch){
+                cout << root->ch << ": (" <<root->freq << ")" << endl;
+            }else {
+                cout << '(' << root->freq << ")" << endl;
+            }
+            printtree(root -> left, output + (isleft ? "│   " : "    "), true);
+            printtree(root -> right, output + (isleft ? "│   " : "    "), false);
+        }
+    }
 };
 
 int main(){
@@ -115,6 +127,8 @@ int main(){
 
     string decoded = mytree.decode(encoded, root);
     cout << "Final decode Str: " <<decoded << endl;
+
+    mytree.printtree(root);
 
     return 0;
 }
