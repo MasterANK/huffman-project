@@ -50,6 +50,29 @@ class huffmanTree{
         encode(root->left,code + "0", huffman_code);
         encode(root->right,code + "1", huffman_code);
     }
+    string huffman_str(string message,unordered_map<char, string> &huffman_code){
+        string encoded_str = "";
+        for (char i: message){
+            encoded_str += huffman_code[i];
+        }
+        return encoded_str;
+    }
+    string decode(string message, node *root){
+        string decoded_message = "";
+        node * temp = root;
+        for(char i : message){
+            if(i=='0'){
+                temp = temp->left;
+            } else if (i == '1') {
+                temp = temp->right;
+            }
+            if(temp->left == nullptr && temp->right == nullptr){
+                decoded_message += temp->ch;
+                temp = root;
+            }
+        }
+        return decoded_message;
+    }
 };
 
 int main(){
@@ -84,17 +107,14 @@ int main(){
 
     huffmanTree mytree;
 
-    node* k = mytree.tree_contruct(minheap);
+    node* root = mytree.tree_contruct(minheap);
 
-    mytree.encode(k,"",huffman_code);
-    for (auto pair: huffman_code) {
-        cout << pair.first << ":" << pair.second << endl;
-    }
+    mytree.encode(root, "", huffman_code);
+    string encoded = mytree.huffman_str(inpstr, huffman_code);
+    cout << "Final encode Str: " <<encoded << endl;
 
-    cout << "---------Root--------"<< endl;
-    cout << "Value: " << k->ch << " ; Frequency: " << k->freq << endl;
-    cout << "---------Root left child--------"<< endl;
-    node* c = k->left;
-    cout << "Value: " << c->ch << " ; Frequency: " << c->freq << endl;
+    string decoded = mytree.decode(encoded, root);
+    cout << "Final decode Str: " <<decoded << endl;
+
     return 0;
 }
