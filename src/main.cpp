@@ -234,7 +234,6 @@ int main(){
         infile.close();
 
         string decoded = mytree.decode(encoded, root);
-        cout << decoded << endl;
         cout << "Enter New Name for the data file: ";
         cin >> filename;
         writefile(decoded, filename);
