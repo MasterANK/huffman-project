@@ -3,6 +3,8 @@
 #include <vector>
 #include <fstream>
 #include <unordered_map> // better than map as faster lookup
+#include <string>
+#include <bitset>
 
 #define Hufffile "hufftree.huff"
 
@@ -80,7 +82,11 @@ class huffmanTree{
             cout << output;
             cout << (isleft? "├──" : "└──");
             if(root->ch){
-                cout << root->ch << ": (" <<root->freq << ")" << endl;
+                if(root->ch == '\n'){
+                    cout << "\\n" << ": (" <<root->freq << ")" << endl;
+                } else{
+                    cout << root->ch << ": (" <<root->freq << ")" << endl;
+                }
             }else {
                 cout << '(' << root->freq << ")" << endl;
             }
@@ -129,7 +135,7 @@ string readfile(string &filename){
     }
     string text,line;
     while(getline(inFile, line)){
-        text += line;
+        text += line + '\n';
     }
     inFile.close();
     return text;
@@ -151,7 +157,15 @@ void writeencoded(string &encoded,string &filename){
         cerr << "Error Writing Encoding to File: " << filename << endl;
         exit(1);
     }
-    outfile << encoded;
+
+    int padding = (8 - (encoded.size() % 8)) % 8;
+    outfile.put(static_cast<char>(padding));
+    encoded.append(padding,'0');
+    while(encoded.size() >= 8){
+        bitset<8> byte(encoded.substr(0,8));
+        outfile.put(static_cast<unsigned char>(byte.to_ulong()));
+        encoded = encoded.substr(8);
+    }
     outfile.close();
 }
 
@@ -161,9 +175,19 @@ string readencoded(string &filename){
         cerr << "Error Writing Encoding to File: " << filename << endl;
         exit(1);
     }
-    string encoded;
-    infile >> encoded;
+    int padding;char paddinginfo;
+    string encoded; char byte;
+    infile.get(paddinginfo); //extracting padding info
+    padding = static_cast<int>(paddinginfo);
+
+    while (infile.get(byte)) {
+        bitset<8> bits(static_cast<unsigned char>(byte));
+        encoded += bits.to_string();
+    }
     infile.close();
+    if(padding > 0){
+        encoded = encoded.substr(0, encoded.size() - padding);
+    }
     return encoded;
 }
 
