@@ -1,0 +1,12 @@
+Size of test.txt = 2.28 KB (2,343 bytes)
+
+Size of Compresses_test.txt = 1.26 KB (1,299 bytes)
+Size of hufftree.huff = 114 bytes (114 bytes)
+
+Total Size of Compresion Data = 1,299 bytes + 114 bytes
+                              = 1413 bytes 
+                              = 1.39 KB
+
+Compresion Rate = (Compresion Data / Original Data) * 100
+                = (1.39 / 2.28) * 100
+                = 60%
