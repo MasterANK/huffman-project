@@ -1,4 +1,4 @@
-Size of book1.txt = 766 KB (7,85,390 bytes)
+Size of book1.txt = 173 KB (1,77,642 bytes)
 
 Size of Compresses_test.txt = 96.8 KB (99,175 bytes)
 Size of hufftree.huff = 156 bytes (156 bytes)
@@ -8,12 +8,12 @@ Total Size of Compresion Data = 99,175 bytes + 156 bytes
                               = 97 KB
 
 Compresion Rate = (1 - (Compresion Data / Original Data)) * 100
-                = (1 - (97 / 766)) * 100
-                = 87%
+                = (1 - (97 / 173)) * 100
+                = 45%
 
 Compression Ratio = (Original Data / Compression Data)
-                  = (766/97)
-              CR  =  7.896
+                  = (173/97)
+              CR  =  1.78
 
 
 Time Taken For Compresshion : 19.8242 seconds
