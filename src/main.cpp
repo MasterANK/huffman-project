@@ -5,6 +5,7 @@
 #include <unordered_map> // better than map as faster lookup
 #include <string>
 #include <bitset>
+#include <chrono> // Time taken Test
 
 #define Hufffile "hufftree.huff"
 
@@ -208,7 +209,7 @@ int main(){
     case 1: {
         cout << "Enter File Name / File Path: ";
         cin >> filename;
-
+        auto start = chrono::high_resolution_clock::now(); // TIMER START
         inpstr = readfile(filename);
         for (char inpc: inpstr) {
             freqmap[inpc]++;
@@ -232,6 +233,10 @@ int main(){
         outfile.close();
         writeencoded(encoded,filename); // Storing Data
 
+        auto end = chrono::high_resolution_clock::now(); // TIMER END
+        chrono::duration<double> duration = end - start; // TIMER CALCULATE
+        cout << "Time taken: " << duration.count() << " seconds" << endl; // TIMER SHOW
+
         cout << "======Successfully Compressed File========" << endl;
         cout << "Would You Like to print the Huffman Tree? (y/n): ";
         cin >> debug_choice;
@@ -254,13 +259,20 @@ int main(){
             cerr << "Error Writing .huff File: " << Hufffile << endl;
             exit(1);
         }
+        cout << "Enter New Name for the data file: ";
+        cin >> filename;
+
+        auto start = chrono::high_resolution_clock::now(); // TIMER START
         node *root = mytree.loadtree(infile); // Loading TREE
         infile.close();
 
         string decoded = mytree.decode(encoded, root);
-        cout << "Enter New Name for the data file: ";
-        cin >> filename;
         writefile(decoded, filename);
+
+        auto end = chrono::high_resolution_clock::now(); // TIMER END
+        chrono::duration<double> duration = end - start; // TIMER CALCULATE
+        cout << "Time taken: " << duration.count() << " seconds" << endl; // TIMER SHOW
+
         cout << "======Successfully Decompressed File========" << endl;
         cout << "Would You Like to print the Huffman Tree? (y/n): ";
         cin >> debug_choice;
